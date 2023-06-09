@@ -1,0 +1,16 @@
+<form>
+    <label>Get Shelf</label>
+    <input id="accID" placeholder="Enter shelf ID" required>
+    <input type="submit" value="Submit">
+    <div id="response-viewer"></div>
+</form>
+<script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        let accID = document.querySelector("#accID").value;
+        console.log('here');
+        const response = await fetch("/api/shelf/get/" + accID + "?render=true");
+        console.log(response);
+        document.querySelector("#response-viewer").innerHTML = await response.text();
+    })
+</script>

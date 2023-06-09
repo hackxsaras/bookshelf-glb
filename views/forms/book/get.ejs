@@ -1,0 +1,14 @@
+<form>
+    <label>Get Book</label>
+    <input id="accID" placeholder="Enter book ID" required>
+    <input type="submit" value="Submit">
+    <div id="response-viewer"></div>
+</form>
+<script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        let accID = document.querySelector("#accID").value;
+        const response = await fetch("/api/book/get/" + accID + "?render=true");
+        document.querySelector("#response-viewer").innerHTML = await response.text();
+    })
+</script>

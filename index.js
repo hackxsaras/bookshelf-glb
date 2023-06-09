@@ -1,18 +1,78 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const mongoString = process.env.MONGO_URL;
+const Book = require('./controller/book.js');
+const Shelf = require('./controller/shelf.js');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
-const app = express()
+const fs = require('fs');
+
+mongoose.connect(mongoString);
+const database = mongoose.connection;
+
+
+database.on('error', (error) => {
+    console.log(error)
+});
+
+
+database.once('connected', () => {
+    console.log('Database Connected');
+});
 
 const port = process.env.PORT || 3000;
+const app = express();
+
+app.set('view engine', 'ejs');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 
-app.get('/shelf/:shelf', (req , res) => {
-    res.send('Hello world');
+
+app.use(session({
+    secret: 'glb bookshelf',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
+
+
+app.use(express.static('public'));
+
+
+app.use(function (req, res, next) {
+    if (req.path.endsWith("/a")) {
+        if(! req.session.loggedIn){
+            return res.redirect("/login");
+        }
+    } else if( req.method == "GET" && (! req.path.startsWith("/api")) ){ 
+        let formPath = __dirname + "/views/forms" + req.path + ".ejs";
+        if( fs.existsSync(formPath) ) {
+            return res.render(__dirname + "/views/showform.ejs", {formPath});
+        }
+    }
+    next();
 })
-app.get('/', (req , res) => {
-    res.send('Welcome to GLB Library.');
+
+app.use('/api/book', Book);
+app.use('/api/shelf', Shelf);
+
+app.get('/', (req, res) => {
+    res.redirect("/login");
 })
 
+app.post('/login', (req, res) => {
+    if(req.body.pass === process.env.PASSCODE){
+        req.session.loggedIn = true;
+        return res.redirect("/book/get");
+    }
+    res.sendFile(__dirname + "/views/login.html");
+});
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-});
+    console.log(`Server Started at ${port}`)
+})

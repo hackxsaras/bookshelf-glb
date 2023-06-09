@@ -1,0 +1,13 @@
+<% if(shelves.length === 0) { %>
+    No matching shelf found.
+<% } %>
+<% shelves.forEach(function(shelf) { %>
+    <% if (shelf) { %>
+        <div class="shelf">
+            <div class="name">Name: <%= shelf.name %></div>
+            <div class="id">Shelf Id:<%= shelf._id %></div>
+        </div>
+    <% } else { %>
+        No matching shelf found.
+    <% } %>
+<% }) %>

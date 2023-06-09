@@ -1,0 +1,15 @@
+<% if(books.length === 0) { %>
+    No matching book found.
+<% } %>
+<% books.forEach(function(book) { %>
+    <% if (book) { %>
+        <div class="book">
+            <div class="name">Name: <%= book.name %></div>
+            <div class="author">Author: <%= book.author %></div>
+            <div class="accID">Accession Number: <%= book.accID %></div>
+            <div class="shelf">Shelf ID: <%= book.shelf %></div>
+        </div>
+    <% } else { %>
+        No matching book found.
+    <% } %>
+<% }) %>
