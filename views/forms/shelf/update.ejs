@@ -1,19 +1,30 @@
 <form>
-    <label>Get Shelf</label>
+    <label>Update Shelf</label>
     Shelf:
-    <select name="accID" id="shelfID" required></select>
+    <select name="accID" id="shelfID"></select>
+    Shelf Name:
+    <input name="name" id="name" placeholder="Enter shelf name">
     <input id="submit" type="submit" value="Submit">
     <div id="response-viewer"></div>
 </form>
 <script>
     document.querySelector("form").addEventListener("submit", async function (e) {
         e.preventDefault();
-        let accID = document.querySelector("#shelfID").value;
-
-        const response = await fetch("/api/shelf/get/" + accID + "?render=true");
+        const data = new FormData(e.target);
+        const formJSON = Object.fromEntries(data.entries());
+        
+        const response = await fetch("/api/shelf/update/"+formJSON.accID+"/a?render=true", {
+            method:"POST",
+            headers:{
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(formJSON)
+        });
         console.log(response);
+        if(response.redirected) window.location.href = response.url;
         document.querySelector("#response-viewer").innerHTML = await response.text();
 
+        window.location.reload();
     });
     (async function(){
         let sel = document.querySelector("#shelfID");
@@ -34,7 +45,7 @@
                 sel.innerHTML += "<option value='"+response[i]._id+"'>"+response[i].name+"</option>";
         }
         if(isShelfIDValid) {
-            document.querySelector("#submit").click();
+            document.querySelector("#name").value = shelfName;
         }
     })();
 </script>

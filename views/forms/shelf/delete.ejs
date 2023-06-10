@@ -1,5 +1,5 @@
 <form>
-    <label>Get Shelf</label>
+    <label>Delete Shelf</label>
     Shelf:
     <select name="accID" id="shelfID" required></select>
     <input id="submit" type="submit" value="Submit">
@@ -10,7 +10,7 @@
         e.preventDefault();
         let accID = document.querySelector("#shelfID").value;
 
-        const response = await fetch("/api/shelf/get/" + accID + "?render=true");
+        const response = await fetch("/api/shelf/delete/" + accID + "/a?render=true");
         console.log(response);
         document.querySelector("#response-viewer").innerHTML = await response.text();
 
@@ -22,19 +22,14 @@
 
         const params = new URL(location.href).searchParams;
         let shelfID = params.get('shelfID');
-        let shelfName = "";
         let isShelfIDValid = false;
 
         for(var i=0;i<response.length;i++){
             if(response[i]._id === shelfID){
                 isShelfIDValid = true;
-                shelfName = response[i].name;
                 sel.innerHTML += "<option value='"+response[i]._id+"' selected>"+response[i].name+"</option>";
             } else
                 sel.innerHTML += "<option value='"+response[i]._id+"'>"+response[i].name+"</option>";
-        }
-        if(isShelfIDValid) {
-            document.querySelector("#submit").click();
         }
     })();
 </script>

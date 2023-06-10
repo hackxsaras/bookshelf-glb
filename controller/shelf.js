@@ -29,7 +29,7 @@ const getByID = async (req, res) => {
 
 const updateByID = async (req, res) => {
     (async function(){
-        renderResponse(req, res, await Shelf.findOneAndUpdate({ _id: req.params.accID }));
+        renderResponse(req, res, await Shelf.findOneAndUpdate({ _id: req.params.accID }, req.body, { new: true }));
     })().catch(e => responseFromError(e, res));
 }
 
@@ -40,6 +40,7 @@ const deleteByID = async (req, res) => {
 }
 
 function responseFromError(error, res) {
+    debugg(error);
     if (error.name === "ValidationError") {
         let errors = {
             error:error.name,
@@ -55,10 +56,10 @@ function responseFromError(error, res) {
     res.status(500).send("Error: "+ error.message);
 }
 function renderResponse(req, res, obj) {
-    if(! Array.isArray(obj)) obj = [obj];
 
     if (req.query.render) {
-        return res.render("models/shelf.ejs", {shelves:obj});
+        if(! Array.isArray(obj)) obj = [obj];
+        return res.render("models/shelf.ejs", {shelves:obj, loggedIn: req.session.loggedIn});
     }
     res.json(obj);
 }

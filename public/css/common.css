@@ -4,6 +4,7 @@
 }
 body{
     margin:0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 input, select{
@@ -27,7 +28,7 @@ form {
     max-width:800px;
     max-height:90vh;
 }
-label {
+form > label {
     font-size:30px;
     font-weight: bold;
     display:block;
@@ -38,11 +39,22 @@ label {
     width:100%;
     overflow: auto;
     padding:10px;
+    text-align:center;
 }
-table {
-    border-collapse:collapse;
+.book, .shelf{
+    font-size:20px;
+    line-height:1.5em;
+    background:rgba(0,0,0,0.1);
+    color:#000;
+    padding:25px;
+    margin:5px;
+    display: inline-block;
+    text-align:left;
 }
-td, th {
-    border:1px solid #000;
-    padding:10px;
+.book label, .shelf label {
+    font-weight: bold;
+}
+a {
+    text-decoration: none;
+    color:#00f; 
 }

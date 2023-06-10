@@ -1,0 +1,13 @@
+<form>
+    <label>Get All Shelves</label>
+    <input type="submit" value="Submit">
+    <div id="response-viewer"></div>
+</form>
+<script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const response = await fetch("/api/shelf/getAll/?render=true");
+        if(response.redirected) window.location.href=response.url;
+        document.querySelector("#response-viewer").innerHTML = await response.text();
+    });
+</script>

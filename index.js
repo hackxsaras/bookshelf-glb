@@ -76,3 +76,10 @@ app.post('/login', (req, res) => {
 app.listen(port, () => {
     console.log(`Server Started at ${port}`)
 })
+
+debugg = function (...args){
+    if(debugging)
+        console.error(...args);
+}
+
+debugging = true;

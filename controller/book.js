@@ -46,6 +46,7 @@ const getByShelfID = async (req, res) => {
 
 
 function responseFromError(error, res) {
+    debugg(error);
     if (error.name === "ValidationError") {
         let errors = {
             error: error.name,
@@ -59,11 +60,16 @@ function responseFromError(error, res) {
     }
     res.status(500).send("Error: "+error.message);
 }
-function renderResponse(req, res, obj) {
-    if(! Array.isArray(obj)) obj = [obj];
-
+async function renderResponse(req, res, obj) {
     if (req.query.render) {
-        return res.render("models/book.ejs", {books:obj});
+        if(! Array.isArray(obj)) obj = [obj];
+        const Shelf = await mongoose.model("Shelf");
+        const shelves = await Shelf.find({});
+        const shelvesNames = {};
+        for(var i=0; i<shelves.length; i++){
+            shelvesNames[shelves[i]._id] = shelves[i].name;
+        }
+        return res.render("models/book.ejs", {books:obj, shelvesNames, loggedIn: req.session.loggedIn});
     }
     res.json(obj);
 }
