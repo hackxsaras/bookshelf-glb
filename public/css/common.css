@@ -1,6 +1,7 @@
 * {
     position: relative;
     box-sizing:border-box;
+    transition: all 0.2s linear;
 }
 body{
     margin:0;
@@ -26,7 +27,8 @@ form {
     padding:20px;
     width:100vw;
     max-width:800px;
-    max-height:90vh;
+    max-height:80vh;
+    /* overflow:auto; */
 }
 form > label {
     font-size:30px;
@@ -57,4 +59,37 @@ form > label {
 a {
     text-decoration: none;
     color:#00f; 
+}
+#menu-toggle {
+    position:fixed;
+    z-index:101;
+    top:10px;
+    right:10px;
+    width:30px;
+    height:30px;
+    border:2px solid #000;
+    border-radius: 5px;
+    user-select:none;
+    background:url("/img/triangle.png");
+    background-size:cover;
+}
+.menu {
+    position:fixed;
+    z-index:100;
+    top:50px;
+    right:-100%;
+    padding:20px;
+    background:#fff;
+    border:1px solid #aaa;
+    user-select:none;
+}
+.menu.open {
+    right:10px;
+}
+.menu.open #menu-toggle{
+    transform:rotate(180deg);
+}
+.menu a {
+    display:block;
+    margin:5px 5px;
 }

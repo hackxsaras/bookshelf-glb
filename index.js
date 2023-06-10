@@ -52,7 +52,7 @@ app.use(function (req, res, next) {
     } else if( req.method == "GET" && (! req.path.startsWith("/api")) ){ 
         let formPath = __dirname + "/views/forms" + req.path + ".ejs";
         if( fs.existsSync(formPath) ) {
-            return res.render(__dirname + "/views/showform.ejs", {formPath});
+            return res.render(__dirname + "/views/showform.ejs", {formPath, loggedIn: req.session.loggedIn});
         }
     }
     next();
@@ -63,6 +63,10 @@ app.use('/api/shelf', Shelf);
 
 app.get('/', (req, res) => {
     res.redirect("/book/getByShelf");
+})
+app.get('/logout', (req, res) => {
+    req.session.loggedIn = false;
+    res.redirect("/login");
 })
 
 app.post('/login', (req, res) => {
