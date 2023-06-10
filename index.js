@@ -62,7 +62,7 @@ app.use('/api/book', Book);
 app.use('/api/shelf', Shelf);
 
 app.get('/', (req, res) => {
-    res.redirect("/login");
+    res.redirect("/book/getByShelf");
 })
 
 app.post('/login', (req, res) => {
