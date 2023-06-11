@@ -74,7 +74,7 @@ app.post('/login', (req, res) => {
         req.session.loggedIn = true;
         return res.redirect("/book/get");
     }
-    res.sendFile(__dirname + "/views/login.html");
+    res.redirect('/login');
 });
 
 app.listen(port, () => {
