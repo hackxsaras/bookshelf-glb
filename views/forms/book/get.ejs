@@ -8,7 +8,7 @@
 <script>
     document.querySelector("form").addEventListener("submit", async function (e) {
         e.preventDefault();
-        let accID = document.querySelector("#accID").value;
+        let accID = document.querySelector("#accID").value.toUpperCase();
         const response = await fetch("/api/book/get/" + accID + "?render=true");
         document.querySelector("#response-viewer").innerHTML = await response.text();
     });

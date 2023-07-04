@@ -1,0 +1,90 @@
+Added Records: <div id="counter"></div>
+<div id="timetaken"></div>
+<script>
+    (async function () {
+        var data = await fetch("/opac.json");
+        data = await data.json();
+        data = data[0].data;
+        data = data.map(function (elem) {
+            const x = {
+                title: elem.Title.trim(),
+                author: elem.Author.trim(),
+                publisher: (elem.PublisherName + " " + elem.PublisherCity).trim(),
+                class: elem.ClassNo.trim(),
+                accID: elem.AccNo
+            }
+            return x;
+        })
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders
+        };
+
+
+        let dict = {}, ids = {}, count = 0;
+        let t = Date.now();
+
+        function updateolddata(index) {
+            document.querySelector("#timetaken").innerHTML = "Index: " + index + "; Elapsed: " + ((Date.now() - t) / 1000) + " seconds";
+            if (index >= data.length) {
+
+                setTimeout(function () {
+                    downloadObjectAsJson(data, "opac.json");
+                }, 3000);
+                return;
+            }
+            const element = data[index];
+            // if (index >= 10) {
+            //     setTimeout(function () {
+            //         downloadObjectAsJson(data, "opac.json");
+            //     }, 3000);
+            //     return;
+            // }
+            if (dict[element.title + element.PublisherName]) {
+                setTimeout(function () {
+                    console.log("here");
+                    element.descid = ids[element.title + element.PublisherName];
+                }, 500)
+                setTimeout(updateolddata, 0, index + 1)
+                return;
+            }
+            dict[element.title + element.PublisherName] = 1;
+
+            requestOptions.body = JSON.stringify(element);
+            fetch("/api/bookDescription/add/a", requestOptions)
+                .then(response => {
+                    response.json().then((r) => {
+                        element.descid = r._id;
+                        ids[element.title + element.PublisherName] = r._id;
+                        console.log(r);
+                    });
+                    document.querySelector("#counter").innerHTML = ++count;
+                })
+            //     .then(result => console.log(result))
+            //     .catch(error => console.log('error', error));
+            setTimeout(updateolddata, 70, index + 1)
+        }
+        function downloadObjectAsJson(dataObjToWrite, filename) {
+            const blob = new Blob([JSON.stringify(dataObjToWrite)], { type: "text/json" });
+            const link = document.createElement("a");
+
+            link.download = filename;
+            link.href = window.URL.createObjectURL(blob);
+            link.dataset.downloadurl = ["text/json", link.download, link.href].join(":");
+
+            const evt = new MouseEvent("click", {
+                view: window,
+                bubbles: true,
+                cancelable: true,
+            });
+
+            link.dispatchEvent(evt);
+            link.remove()
+        };
+        updateolddata(0);
+    })();
+
+</script>

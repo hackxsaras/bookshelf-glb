@@ -1,0 +1,24 @@
+<% if(books.length === 0) { %>
+    No matching book found.
+<% } %>
+<% books.forEach(function(book) { %>
+    <% if (book) { %>
+        <div class="book">
+            <div class="name"><label>Name: </label><%= book.name %></div>
+            <div class="author"><label>Author: </label><%= book.author %></div>
+            <div class="accID"><label>Accession Number: </label><%= book.accID %></div>
+            <div class="shelf-name">
+                <label>Shelf Name: </label>
+                <a href="/shelf/get?shelfID=<%= book.shelf %>">
+                    <%= shelvesNames[book.shelf] %>
+                </a>
+            </div>
+            <% if(loggedIn) { %>
+                <div class="update"><a href="/book/update?accID=<%= book.accID %>">Update Book</a></div>
+                <div class="delete"><a href="/book/delete?accID=<%= book.accID %>">Delete Book</a></div>
+            <% } %>
+        </div>
+    <% } else { %>
+        No matching book found.
+    <% } %>
+<% }) %>

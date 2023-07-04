@@ -1,0 +1,23 @@
+<form>
+    <label>Get Book</label>
+    Accession Number:
+    <input id="accID" placeholder="Enter book ID" required>
+    <input id="submit" type="submit" value="Submit">
+    <div id="response-viewer"></div>
+</form>
+<script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        let accID = document.querySelector("#accID").value;
+        const response = await fetch("/api/book/get/" + accID + "?render=true");
+        document.querySelector("#response-viewer").innerHTML = await response.text();
+    });
+    (async function(){
+        const params = new URL(location.href).searchParams;
+        let accID = params.get('accID');
+        if(accID){
+            document.querySelector("#accID").value = accID;
+            document.querySelector("#submit").click();
+        }
+    })();
+</script>

@@ -4,16 +4,29 @@
 <% shelves.forEach(function(shelf) { %>
     <% if (shelf) { %>
         <div class="shelf">
-            <div class="name"><label>Name: </label><%= shelf.name %></div>
-            <div class="id"><label>Shelf ID: </label><%= shelf._id %></div>
-            <div class="books">
-                <a href="/book/getByShelf?shelfID=<%= shelf._id %>">View books in shelf</a>
-            </div>
-            
             <% if(loggedIn) { %>
                 <div class="update"><a href="/shelf/update?shelfID=<%= shelf._id %>">Update Shelf</a></div>
                 <div class="delete"><a href="/shelf/delete?shelfID=<%= shelf._id %>">Delete Shelf</a></div>
             <% } %>
+            <div class="name"><label>Name: </label><%= shelf.name %></div>
+            <div class="shelfid"><label>Id: </label><%= shelf._id %></div>
+            <div class="books">
+                <table class="book-list">
+                    <label> Book List </label>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Row</th>
+                    </tr>
+                    <% shelf.books.forEach(function(book) { %>
+                        <tr>
+                            <td> <%= book.description.title %> </td>
+                            <td> <%= book.description.author %> </td>
+                            <td> <%= book.row %> </td>
+                        </tr>
+                    <% }) %>
+                </table>
+            </div>
         </div>
     <% } else { %>
         No matching shelf found.

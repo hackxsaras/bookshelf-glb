@@ -1,0 +1,106 @@
+* {
+    position: relative;
+    box-sizing:border-box;
+    transition: all 0.2s linear;
+}
+body{
+    margin:0;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+input, select{
+    display:block;
+    font-size:20px;
+    outline:none;
+    border:2px solid rgba(0,0,0,.1);
+    padding:10px;
+    width:100%;
+}
+input, select {
+    margin-bottom:10px;
+}
+form {
+    position: absolute;
+    top:50vh;
+    left:50vw;
+    transform: translateX(-50%) translateY(-50%);
+    padding:20px;
+    width:100vw;
+    max-width:800px;
+    max-height:80vh;
+    /* overflow:auto; */
+}
+form > label {
+    font-size:30px;
+    font-weight: bold;
+    display:block;
+    text-align:center;
+    padding:20px;
+}
+#response-viewer{
+    width:100%;
+    overflow: auto;
+    padding:10px;
+    text-align:center;
+}
+.book, .shelf{
+    font-size:20px;
+    line-height:1.5em;
+    background:rgba(0,0,0,0.1);
+    color:#000;
+    padding:25px;
+    margin:5px;
+    display: inline-block;
+    text-align:left;
+}
+.book label, .shelf label {
+    font-weight: bold;
+}
+a {
+    text-decoration: none;
+    color:#00f; 
+}
+#menu-toggle {
+    position:fixed;
+    z-index:101;
+    top:10px;
+    right:10px;
+    width:30px;
+    height:30px;
+    border:2px solid #000;
+    border-radius: 5px;
+    user-select:none;
+    background:url("/img/triangle.png");
+    background-size:cover;
+}
+.menu {
+    position:fixed;
+    z-index:100;
+    top:50px;
+    right:-100%;
+    padding:20px;
+    background:#fff;
+    border:1px solid #aaa;
+    user-select:none;
+}
+.menu.open {
+    right:10px;
+}
+.menu.open #menu-toggle{
+    transform:rotate(180deg);
+}
+.menu a {
+    display:block;
+    margin:5px 5px;
+}
+.logo-container{
+    text-align: center;
+}
+.logo {
+    margin:10px;
+    background: url('/img/logo.png');
+    background-size:100% 100%;
+    width:75px;
+    height:60px;
+    display: inline-block;
+}

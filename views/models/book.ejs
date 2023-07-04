@@ -1,24 +1,41 @@
 <% if(books.length === 0) { %>
     No matching book found.
-<% } %>
-<% books.forEach(function(book) { %>
-    <% if (book) { %>
-        <div class="book">
-            <div class="name"><label>Name: </label><%= book.name %></div>
-            <div class="author"><label>Author: </label><%= book.author %></div>
-            <div class="accID"><label>Accession Number: </label><%= book.accID %></div>
-            <div class="shelf-name">
-                <label>Shelf Name: </label>
-                <a href="/shelf/get?shelfID=<%= book.shelf %>">
-                    <%= shelvesNames[book.shelf] %>
-                </a>
-            </div>
+<% } else { %>
+    <table class="book-list">
+        <div>Book List</div>
+        <tr>
+            <th>Accession Number</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Class No</th>
+            <th>Publisher</th>
+            <th>Shelf</th>
+            <th>Row</th>
             <% if(loggedIn) { %>
-                <div class="update"><a href="/book/update?accID=<%= book.accID %>">Update Book</a></div>
-                <div class="delete"><a href="/book/delete?accID=<%= book.accID %>">Delete Book</a></div>
+                <th colspan="2">Update Book</th>
             <% } %>
-        </div>
-    <% } else { %>
-        No matching book found.
-    <% } %>
-<% }) %>
+        </tr>
+        <% books.forEach(function(book) { %>
+            <% if (book) { %>
+                <tr>
+                    <td> <%= book.accID %> </td>
+                    <td> <%= book.description.title %> </td>
+                    <td> <%= book.description.author %> </td>
+                    <td> <%= book.description.class %> </td>
+                    <td> <%= book.description.publisher %> </td>
+                    <td> 
+                        <a href="/shelf/get?shelfID=<%= book.shelf?._id %>">
+                            <%= book.shelf?.name %>
+                        </a> 
+                    </td>
+                    <td> <%= book.row %> </td>
+                    <% if(loggedIn) { %>
+                        <td><a href="/book/update?accID=<%= book.accID %>">Update Book</a></div>
+                        <td><a href="/book/delete?accID=<%= book.accID %>">Delete Book</a></div>
+                    <% } %>
+                </tr>
+            <% } else { %>
+                No matching book found.
+            <% } %>
+        <% }) %>
+<% } %>

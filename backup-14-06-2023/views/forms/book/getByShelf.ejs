@@ -1,0 +1,33 @@
+<form>
+    <label>Get Books in Shelf</label>
+    Shelf:
+    <select id="accID" required></select>
+    <input id="submit" type="submit" value="Submit">
+    <div id="response-viewer"></div>
+</form>
+<script>
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        let accID = document.querySelector("#accID").value;
+        const response = await fetch("/api/book/getByShelf/" + accID + "?render=true");
+        document.querySelector("#response-viewer").innerHTML = await response.text();
+    });
+    (async function(){
+        let sel = document.querySelector("#accID");
+        let response = await fetch("/api/shelf/getAll");
+        response = await response.json();
+
+        const params = new URL(location.href).searchParams;
+        let shelfID = params.get('shelfID');
+        let isShelfIDValid = false;
+
+        for(var i=0;i<response.length;i++){
+            if(response[i]._id === shelfID){
+                isShelfIDValid = true;
+                sel.innerHTML += "<option value='"+response[i]._id+"' selected>"+response[i].name+"</option>";
+            } else
+                sel.innerHTML += "<option value='"+response[i]._id+"'>"+response[i].name+"</option>";
+        }
+        if(isShelfIDValid) document.querySelector("#submit").click();
+    })();
+</script>

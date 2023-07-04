@@ -1,0 +1,45 @@
+Added Records: <div id="counter"></div>
+<div id="timetaken"></div>
+<script>
+    (async function () {
+        var data = await fetch("/opacn.json");
+        data = await data.json();
+        
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json"); 
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders
+        };
+
+        
+        let count = 0;
+        let t = Date.now();
+        
+        async function updateolddata(index) {
+
+            document.querySelector("#timetaken").innerHTML = "Index: "+index+"; Elapsed: " + ((Date.now() - t)/1000) + " seconds";
+            if(index >= data.length){
+                return ;
+            }
+            const elem = data[index];
+            
+            const x = {
+                description:elem.descid,
+                accID: elem.accID
+            }
+            
+            requestOptions.body = JSON.stringify(x);
+            fetch("/api/book/add/a", requestOptions)
+                .then(response => {
+                    response.text().then(console.log);
+                    document.querySelector("#counter").innerHTML = ++count;
+                })
+            //     .then(result => console.log(result))
+            //     .catch(error => console.log('error', error));
+            setTimeout(updateolddata, 30, index+1)
+        }
+        updateolddata(0);
+    })();
+
+</script>

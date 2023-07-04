@@ -1,0 +1,22 @@
+.autocomplete-items {
+    height:300px;
+    overflow:auto;
+    border:1px solid #000;
+    margin:10px;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+}
+.autocomplete-items div.selected {
+    background-color: #05f;
+    color:#fff;
+}

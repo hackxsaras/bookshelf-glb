@@ -1,0 +1,9 @@
+<script type="module">
+    (async function() {
+        var data = await fetch("/opac.json");
+        data = data.json();
+        data = data[0].data;
+        console.log(data[0]);
+    })();
+
+</script>

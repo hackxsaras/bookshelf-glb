@@ -1,0 +1,40 @@
+<form>
+    <label>Add Book</label>
+    Accession Number:
+    <input name="accID" id="accID" placeholder="Enter book ID" required>
+    Book Name:
+    <input name="name" id="name" placeholder="Enter book name" required>
+    Book Author:
+    <input name="author" id="author" placeholder="Enter author name">
+    Shelf:
+    <select name="shelf" id="shelfID"></select>
+    <input type="submit" value="Submit">
+    <div id="response-viewer"></div>
+</form>
+<script>
+    (async function () {
+        let sel = document.querySelector("#shelfID");
+        let response = await fetch("/api/shelf/getAll");
+        response = await response.json();
+
+        for (var i = 0; i < response.length; i++) {
+            sel.innerHTML += "<option value='" + response[i]._id + "'>" + response[i].name + "</option>";
+        }
+    })();
+    document.querySelector("form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const formJSON = Object.fromEntries(data.entries());
+        console.log(formJSON);
+        const response = await fetch("/api/book/add/a?render=true", {
+            method:"POST",
+            headers:{
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(formJSON)
+        });
+        console.log(response);
+        if(response.redirected) window.location.href = response.url;
+        document.querySelector("#response-viewer").innerHTML = await response.text();
+    })
+</script>

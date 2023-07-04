@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const mongoString = process.env.MONGO_URL;
+const BookDescription = require('./controller/bookDescription.js');
 const Book = require('./controller/book.js');
 const Shelf = require('./controller/shelf.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+
 
 const fs = require('fs');
 
@@ -47,7 +49,7 @@ app.use(express.static('public'));
 app.use(function (req, res, next) {
     if (req.path.endsWith("/a")) {
         if(! req.session.loggedIn){
-            return res.redirect("/login");
+            // return res.redirect("/login");
         }
     } else if( req.method == "GET" && (! req.path.startsWith("/api")) ){ 
         let formPath = __dirname + "/views/forms" + req.path + ".ejs";
@@ -60,6 +62,7 @@ app.use(function (req, res, next) {
 
 app.use('/api/book', Book);
 app.use('/api/shelf', Shelf);
+app.use('/api/bookDescription', BookDescription);
 
 app.get('/', (req, res) => {
     res.redirect("/book/getByShelf");

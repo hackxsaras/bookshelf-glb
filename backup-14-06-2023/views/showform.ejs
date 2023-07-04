@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+    <div class="menu">
+        <div id="menu-toggle"></div>
+        <% if(loggedIn) { %>
+            <a href="/logout">Logout</a>
+        <% } else { %>
+            <a href="/login">Login</a>
+        <% } %>
+        Book
+        <a href="/book/get">Get Book</a>
+        <a href="/book/getByShelf">Get Books in Shelf</a>
+        <% if(loggedIn) { %>
+            <a href="/book/getAll">Get All Books</a>
+            <a href="/book/add">Add Book</a>
+            <a href="/book/update">Update Book</a>
+            <a href="/book/delete">Delete Book</a>
+        <% } %>
+        Shelf
+        <a href="/shelf/get">Get Shelf</a>
+        <a href="/shelf/getAll">Get All Shelves</a>
+        <% if(loggedIn) { %>
+            <a href="/shelf/add">Add Shelf</a>
+            <a href="/shelf/update">Update Shelf</a>
+            <a href="/shelf/delete">Delete Shelf</a>
+        <% } %>
+    </div>
+    <div class="logo-container">
+        <div class="logo"></div>
+    </div>
+    <%- include(formPath) %>
+    <script>
+        document.querySelector("#menu-toggle").onclick = function(){
+            document.querySelector(".menu").classList.toggle("open");
+        }
+        document.querySelector("form").onsubmit = function(e) {
+            let rv = document.querySelector("#response-viewer");
+            if(rv){
+                rv.innerHTML = "Loading...";
+            }
+        }
+    </script>
+</body>
+</html>

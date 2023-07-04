@@ -1,0 +1,21 @@
+<% if(shelves.length === 0) { %>
+    No matching shelf found.
+<% } %>
+<% shelves.forEach(function(shelf) { %>
+    <% if (shelf) { %>
+        <div class="shelf">
+            <div class="name"><label>Name: </label><%= shelf.name %></div>
+            <div class="id"><label>Shelf ID: </label><%= shelf._id %></div>
+            <div class="books">
+                <a href="/book/getByShelf?shelfID=<%= shelf._id %>">View books in shelf</a>
+            </div>
+            
+            <% if(loggedIn) { %>
+                <div class="update"><a href="/shelf/update?shelfID=<%= shelf._id %>">Update Shelf</a></div>
+                <div class="delete"><a href="/shelf/delete?shelfID=<%= shelf._id %>">Delete Shelf</a></div>
+            <% } %>
+        </div>
+    <% } else { %>
+        No matching shelf found.
+    <% } %>
+<% }) %>

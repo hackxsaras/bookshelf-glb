@@ -9,42 +9,42 @@ const router = express.Router();
 
 
 const add = (req, res) => {
-    (async function(){
-        let newShelf = new Shelf(req.body);
-        renderResponse(req, res, await newShelf.save());
-    })().catch(e => responseFromError(e, res));
+
+    let newShelf = new Shelf(req.body);
+    renderResponse(req, res, newShelf.save())
+        .catch(e => responseFromError(e, res));
 }
 
 const getAll = async (req, res) => {
-    (async function(){
-        renderResponse(req, res, await Shelf.find({}));
-    })().catch(e => responseFromError(e, res));
+
+    renderResponse(req, res, Shelf.find({}))
+        .catch(e => responseFromError(e, res));
 }
 
 const getByID = async (req, res) => {
-    (async function(){
-        renderResponse(req, res, await Shelf.findOne({ _id: req.params.accID }));
-    })().catch(e => responseFromError(e, res));
+
+    renderResponse(req, res, Shelf.findOne({ _id: req.params.accID }))
+        .catch(e => responseFromError(e, res));
 }
 
 const updateByID = async (req, res) => {
-    (async function(){
-        renderResponse(req, res, await Shelf.findOneAndUpdate({ _id: req.params.accID }, req.body, { new: true }));
-    })().catch(e => responseFromError(e, res));
+
+    renderResponse(req, res, Shelf.findOneAndUpdate({ _id: req.params.accID }, req.body, { new: true }))
+        .catch(e => responseFromError(e, res));
 }
 
 const deleteByID = async (req, res) => {
-    (async function(){
-        renderResponse(req, res, await Shelf.findOneAndRemove({ _id: req.params.accID }));
-    })().catch(e => responseFromError(e, res));
+
+    renderResponse(req, res, Shelf.findOneAndRemove({ _id: req.params.accID }))
+        .catch(e => responseFromError(e, res));
 }
 
 function responseFromError(error, res) {
     debugg(error);
     if (error.name === "ValidationError") {
         let errors = {
-            error:error.name,
-            details:{}
+            error: error.name,
+            details: {}
         };
 
         Object.keys(error.errors).forEach((key) => {
@@ -53,16 +53,27 @@ function responseFromError(error, res) {
         return res.status(400).json(errors);
     }
     console.error(error);
-    res.status(500).send("Error: "+ error.message);
+    res.status(500).send("Error: " + error.message);
 }
-function renderResponse(req, res, obj) {
+async function renderResponse(req, res, query) {
+
+    let obj;
+    if ((req.query.render || (req.query.populate !== "false")) && query.populate)
+        obj = await query.populate([]);
+    else
+        obj = await query;
 
     if (req.query.render) {
-        if(! Array.isArray(obj)) obj = [obj];
-        return res.render("models/shelf.ejs", {shelves:obj, loggedIn: req.session.loggedIn});
+        if (!Array.isArray(obj)) obj = [obj];
+        const Book = mongoose.model("Book");
+        for(var i=0;i<obj.length;i++){
+            obj[i].books = await Book.find({ shelf:obj[i]._id }).populate(["description"]);
+        }
+        return res.render("models/shelf.ejs", { shelves: obj, loggedIn: req.session.loggedIn });
     }
     res.json(obj);
 }
+
 
 router.get('/getAll', getAll);
 router.post('/add/a', add);
