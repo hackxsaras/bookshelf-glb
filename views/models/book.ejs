@@ -19,10 +19,10 @@
             <% if (book) { %>
                 <tr>
                     <td> <%= book.accID %> </td>
-                    <td> <%= book.description.title %> </td>
-                    <td> <%= book.description.author %> </td>
-                    <td> <%= book.description.class %> </td>
-                    <td> <%= book.description.publisher %> </td>
+                    <td> <%= book.description?.title %> </td>
+                    <td> <%= book.description?.author %> </td>
+                    <td> <%= book.description?.class %> </td>
+                    <td> <%= book.description?.publisher %> </td>
                     <td> 
                         <a href="/shelf/get?shelfID=<%= book.shelf?._id %>">
                             <%= book.shelf?.name %>
