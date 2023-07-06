@@ -11,6 +11,8 @@
         let accID = document.querySelector("#accID").value.toUpperCase();
         const response = await fetch("/api/book/get/" + accID + "?render=true");
         document.querySelector("#response-viewer").innerHTML = await response.text();
+        document.querySelector("#accID").value = "";
+        document.querySelector("#accID").focus();
     });
     (async function(){
         const params = new URL(location.href).searchParams;

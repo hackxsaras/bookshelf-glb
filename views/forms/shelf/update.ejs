@@ -1,9 +1,13 @@
 <form>
     <label>Update Shelf</label>
     Shelf:
-    <select name="accID" id="shelfID"></select>
+    <select name="laccID" id="shelfID"></select>
+    Accession Number:
+    <input name="accID" id="accID" placeholder="Enter shelf Accession Number" required>
     Shelf Name:
     <input name="name" id="name" placeholder="Enter shelf name">
+    Subject:
+    <input id="subject" name="subject" placeholder="Enter subject seperated by comma (,)">
     <input id="submit" type="submit" value="Submit">
     <div id="response-viewer"></div>
 </form>
@@ -12,8 +16,8 @@
         e.preventDefault();
         const data = new FormData(e.target);
         const formJSON = Object.fromEntries(data.entries());
-        
-        const response = await fetch("/api/shelf/update/"+formJSON.accID+"/a?render=true", {
+        console.log(formJSON);
+        const response = await fetch("/api/shelf/update/"+formJSON.laccID+"/a?render=true", {
             method:"POST",
             headers:{
                 "Content-type": "application/json; charset=UTF-8"
@@ -33,19 +37,22 @@
 
         const params = new URL(location.href).searchParams;
         let shelfID = params.get('shelfID');
-        let shelfName = "";
+        let selShelf = {};
         let isShelfIDValid = false;
 
         for(var i=0;i<response.length;i++){
-            if(response[i]._id === shelfID){
+            if(response[i].accID === shelfID){
                 isShelfIDValid = true;
-                shelfName = response[i].name;
-                sel.innerHTML += "<option value='"+response[i]._id+"' selected>"+response[i].name+"</option>";
+                selShelf = response[i];
+                sel.innerHTML += "<option value='"+response[i].accID+"' selected>"+response[i].accID + " - " + response[i].name+"</option>";
             } else
-                sel.innerHTML += "<option value='"+response[i]._id+"'>"+response[i].name+"</option>";
+                sel.innerHTML += "<option value='"+response[i].accID+"'>"+ response[i].accID + " - " + response[i].name +"</option>";
         }
         if(isShelfIDValid) {
-            document.querySelector("#name").value = shelfName;
+            document.querySelector("#name").value = selShelf.name;
+            document.querySelector("#shelfID").value = selShelf.accID;
+            document.querySelector("#accID").value = selShelf.accID;
+            document.querySelector("#subject").value = selShelf.subject;
         }
     })();
 </script>

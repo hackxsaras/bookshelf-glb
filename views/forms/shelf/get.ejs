@@ -22,18 +22,19 @@
 
         const params = new URL(location.href).searchParams;
         let shelfID = params.get('shelfID');
-        let shelfName = "";
+        let selShelf;
         let isShelfIDValid = false;
 
         for(var i=0;i<response.length;i++){
-            if(response[i]._id === shelfID){
+            if(response[i].accID === shelfID){
                 isShelfIDValid = true;
-                shelfName = response[i].name;
-                sel.innerHTML += "<option value='"+response[i]._id+"' selected>"+response[i].name+"</option>";
+                selShelf = response[i];
+                sel.innerHTML += "<option value='"+response[i].accID+"' selected>"+response[i].accID + " - " + response[i].name+"</option>";
             } else
-                sel.innerHTML += "<option value='"+response[i]._id+"'>"+response[i].name+"</option>";
+                sel.innerHTML += "<option value='"+response[i].accID+"'>"+ response[i].accID + " - " + response[i].name +"</option>";
         }
         if(isShelfIDValid) {
+            document.querySelector("#shelfID").value = selShelf.accID;
             document.querySelector("#submit").click();
         }
     })();

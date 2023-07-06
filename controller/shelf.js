@@ -23,19 +23,19 @@ const getAll = async (req, res) => {
 
 const getByID = async (req, res) => {
 
-    renderResponse(req, res, Shelf.findOne({ _id: req.params.accID }))
+    renderResponse(req, res, Shelf.findOne({ accID: req.params.accID }))
         .catch(e => responseFromError(e, res));
 }
 
 const updateByID = async (req, res) => {
 
-    renderResponse(req, res, Shelf.findOneAndUpdate({ _id: req.params.accID }, req.body, { new: true }))
+    renderResponse(req, res, Shelf.findOneAndUpdate({ accID: req.params.accID }, req.body, { new: true }))
         .catch(e => responseFromError(e, res));
 }
 
 const deleteByID = async (req, res) => {
 
-    renderResponse(req, res, Shelf.findOneAndRemove({ _id: req.params.accID }))
+    renderResponse(req, res, Shelf.findOneAndRemove({ accID: req.params.accID }))
         .catch(e => responseFromError(e, res));
 }
 
@@ -79,6 +79,6 @@ router.get('/getAll', getAll);
 router.post('/add/a', add);
 router.post('/update/:accID/a', updateByID);
 router.get('/delete/:accID/a', deleteByID);
-router.get('/get/:accID', getByID);
+router.get('/get/:accID', getByID);``
 
 module.exports = router;
