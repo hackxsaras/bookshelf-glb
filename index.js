@@ -65,7 +65,7 @@ app.use('/api/shelf', Shelf);
 app.use('/api/bookDescription', BookDescription);
 
 app.get('/', (req, res) => {
-    res.redirect("/book/getByShelf");
+    res.redirect("/shelf/get");
 })
 app.get('/logout', (req, res) => {
     req.session.loggedIn = false;
