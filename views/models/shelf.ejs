@@ -20,8 +20,8 @@
                     </tr>
                     <% shelf.books.forEach(function(book) { %>
                         <tr>
-                            <td> <%= book.description.title %> </td>
-                            <td> <%= book.description.author %> </td>
+                            <td> <%= book.description?.title %> </td>
+                            <td> <%= book.description?.author %> </td>
                             <td> <%= book.row %> </td>
                         </tr>
                     <% }) %>

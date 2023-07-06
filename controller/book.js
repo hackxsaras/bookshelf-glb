@@ -36,11 +36,6 @@ const deleteByID = async (req, res) => {
     renderResponse(req, res, Book.findOneAndRemove({ accID: req.params.accID }))
         .catch(e => responseFromError(e, res));
 }
-const getByShelfID = async (req, res) => {
-
-    renderResponse(req, res, Book.find({ shelf: req.params.accID }))
-        .catch(e => responseFromError(e, res));
-}
 
 
 function responseFromError(error, res) {
@@ -76,6 +71,5 @@ router.post('/add/a', add);
 router.post('/update/:accID/a', updateByID);
 router.get('/delete/:accID/a', deleteByID);
 router.get('/get/:accID', getByID);
-router.get('/getByShelf/:accID', getByShelfID);
 
 module.exports = router;
