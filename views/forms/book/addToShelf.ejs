@@ -1,5 +1,5 @@
 <form>
-    <label>Get Book</label>
+    <label>Add Book To Shelf</label>
     Accession Number:
     <input id="accID" name="accID" placeholder="Enter book ID" required>
     Shelf:
@@ -45,9 +45,9 @@
             if(response[i]._id === shelfID){
                 isShelfIDValid = true;
                 shelfName = response[i].name;
-                sel.innerHTML += "<option value='"+response[i].accID+"' selected>"+response[i].accID + " - " + response[i].name+"</option>";
+                sel.innerHTML += "<option value='"+response[i]._id+"' selected>"+response[i].accID + " - " + response[i].name+"</option>";
             } else
-                sel.innerHTML += "<option value='"+response[i].accID+"'>"+ response[i].accID + " - " + response[i].name +"</option>";
+                sel.innerHTML += "<option value='"+response[i]._id+"'>"+ response[i].accID + " - " + response[i].name +"</option>";
         }
         if(isShelfIDValid) {
             document.querySelector("#name").value = shelfName;

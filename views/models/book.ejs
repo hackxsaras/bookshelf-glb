@@ -24,8 +24,8 @@
                     <td> <%= book.description?.class %> </td>
                     <td> <%= book.description?.publisher %> </td>
                     <td> 
-                        <a href="/shelf/get?shelfID=<%= book.shelf?._id %>">
-                            <%= book.shelf?.name %>
+                        <a href="/shelf/get?shelfID=<%= book.shelf?.accID %>">
+                            <%= book.shelf?.accID + " - " + book.shelf?.name %>
                         </a> 
                     </td>
                     <td> <%= book.row %> </td>

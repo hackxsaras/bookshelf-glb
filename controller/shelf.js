@@ -58,17 +58,21 @@ function responseFromError(error, res) {
 async function renderResponse(req, res, query) {
 
     let obj;
-    if ((req.query.render || (req.query.populate !== "false")) && query.populate)
-        obj = await query.populate([]);
+    
+    if ((req.query.render || (req.query.populate !== "false")) && query.populate) {
+        obj = await query.lean();
+        let wasjson = false;
+        if (!Array.isArray(obj)){ obj = [obj]; wasjson = true; }
+        const Book = await mongoose.model("Book");
+        for(var i=0;i<obj.length;i++){
+            obj[i].books = await Book.find({ shelf:obj[i]._id }).populate(["description"]).sort({row:1}).lean();
+        }
+        if(wasjson) obj = obj[0];
+    }
     else
         obj = await query;
-
     if (req.query.render) {
         if (!Array.isArray(obj)) obj = [obj];
-        const Book = mongoose.model("Book");
-        for(var i=0;i<obj.length;i++){
-            obj[i].books = await Book.find({ shelf:obj[i]._id }).populate(["description"]);
-        }
         return res.render("models/shelf.ejs", { shelves: obj, loggedIn: req.session.loggedIn });
     }
     res.json(obj);

@@ -27,7 +27,7 @@ const getByID = async (req, res) => {
 }
 
 const updateByID = async (req, res) => {
-    console.log("update", req.body, req.params.accID);
+    // console.log("update", req.body, req.params.accID);
     renderResponse(req, res, Book.findOneAndUpdate({ accID: req.params.accID }, req.body, { new: true }))
         .catch(e => responseFromError(e, res));
 }
