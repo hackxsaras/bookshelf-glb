@@ -2,7 +2,7 @@ Added Records: <div id="counter"></div>
 <div id="timetaken"></div>
 <script>
     (async function () {
-        var data = await fetch("/opac.json");
+        var data = await fetch("/opacb.json");
         data = await data.json();
         data = data[0].data;
         data = data.map(function (elem) {
@@ -43,22 +43,22 @@ Added Records: <div id="counter"></div>
             //     }, 3000);
             //     return;
             // }
-            if (dict[element.title + element.PublisherName]) {
+            if (dict[element.title + element.publisher]) {
                 setTimeout(function () {
                     console.log("here");
-                    element.descid = ids[element.title + element.PublisherName];
+                    element.descid = ids[element.title + element.publisher];
                 }, 500)
                 setTimeout(updateolddata, 0, index + 1)
                 return;
             }
-            dict[element.title + element.PublisherName] = 1;
+            dict[element.title + element.publisher] = 1;
 
             requestOptions.body = JSON.stringify(element);
             fetch("/api/bookDescription/add/a", requestOptions)
                 .then(response => {
                     response.json().then((r) => {
                         element.descid = r._id;
-                        ids[element.title + element.PublisherName] = r._id;
+                        ids[element.title + element.publisher] = r._id;
                         console.log(r);
                     });
                     document.querySelector("#counter").innerHTML = ++count;

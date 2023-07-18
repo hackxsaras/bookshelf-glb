@@ -14,12 +14,14 @@
                 <table class="book-list">
                     <label> Book List </label>
                     <tr>
+                        <th>Accession No.</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Row</th>
                     </tr>
                     <% shelf.books.forEach(function(book) { %>
                         <tr>
+                            <td> <%= book.accID %> </td>
                             <td> <%= book.description?.title %> </td>
                             <td> <%= book.description?.author %> </td>
                             <td> <%= book.row %> </td>

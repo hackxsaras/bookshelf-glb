@@ -64,31 +64,11 @@ const updateByID = async (req, res) => {
     try {
         const { accID } = req.params;
         const updatedBookDescription = req.body;
-
-        // Find the existing bookDescription
-        const existingBookDescription = await BookDescription.findById(accID);
-        if (!existingBookDescription) {
-            return res.status(404).json({ error: "BookDescription not found" });
-        }
-
-        // Delete previous references from relevant tags
-        await RelevantTag.model.updateMany(
-            {
-                _id: { $in: existingBookDescription.relevantTags },
-                bookDescriptions: existingBookDescription._id,
-            },
-            { $pull: { bookDescriptions: existingBookDescription._id } }
-        );
-
-        // Re-index the title and author
-        await RelevantTag.indexString(updatedBookDescription.title, "bookDescriptions", existingBookDescription._id);
-        await RelevantTag.indexString(updatedBookDescription.author, "bookDescriptions", existingBookDescription._id);
-
         // Update the bookDescription
         await renderResponse(req, res, BookDescription.findByIdAndUpdate(
             accID,
             updatedBookDescription,
-            { new: true }
+            { new: true, upsert: true}
         ));
     } catch (error) {
         responseFromError(error, res);
